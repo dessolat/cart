@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { IProduct } from '../types';
+import { ICartItem } from '../types';
 
 function useCartLocalStorage(
   key: string
-): [IProduct[] | null, React.Dispatch<React.SetStateAction<IProduct[] | null>>] {
-  const [values, setValues] = useState<IProduct[] | null>(null);
+): [ICartItem[] | null, React.Dispatch<React.SetStateAction<ICartItem[] | null>>] {
+  const [values, setValues] = useState<ICartItem[] | null>(null);
 
   useEffect(() => {
     if (!values) return;
@@ -12,8 +12,9 @@ function useCartLocalStorage(
     localStorage.setItem(
       key,
       JSON.stringify(
-        values.map(({ id }) => ({
-          id
+        values.map(({ id, count }) => ({
+          id,
+          count
         }))
       )
     );

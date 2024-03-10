@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAllProducts, getByIds } from './api';
-import { IProduct } from './types';
+import { ICartItem, IProduct } from './types';
 import useCartLocalStorage from './hooks/useLocalStorage';
 import Cart from './Cart';
 import ShopProducts from './ShopProducts';
@@ -14,12 +14,23 @@ function App() {
       const cartStorageData = localStorage.getItem('cartItems');
 
       if (cartStorageData && JSON.parse(cartStorageData).length > 0) {
-        const indexArr = JSON.parse(cartStorageData).map((item: { id: number }) => item.id);
+        const parsedCartItems = JSON.parse(cartStorageData);
+        const namedCardArray = parsedCartItems.reduce((acc: any, item: { id: number; count: number }) => {
+          acc[item.id] = item.count;
+          return acc;
+        }, {});
+
+        const indexArr = parsedCartItems.map((item: { id: number }) => item.id);
 
         const [newData, cartData] = await Promise.all([getAllProducts(), getByIds(indexArr)]);
 
+        const newCartData: ICartItem[] = cartData.reduce((acc: ICartItem[], item: IProduct) => {
+          acc.push({ ...item, count: namedCardArray[item.id] });
+          return acc;
+        }, []);
+
         setData(newData);
-        setCartItems(cartData);
+        setCartItems(newCartData);
         return;
       }
 
@@ -29,7 +40,18 @@ function App() {
   }, []);
 
   const addToCart = (product: IProduct) => () => {
-    setCartItems(prev => (prev ? [...prev, product] : [product]));
+    setCartItems(prevItems => {
+      if (!prevItems) return [{ ...product, count: 1 }];
+
+      const existingItem = prevItems?.find(item => item.id === product.id);
+
+      if (existingItem)
+        return prevItems.map(item =>
+          item.id === product.id ? { ...product, count: existingItem.count + 1 } : item
+        );
+
+      return [...prevItems, { ...product, count: 1 }];
+    });
   };
 
   const removeFromCart = (id: number) => () => {

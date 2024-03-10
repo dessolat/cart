@@ -1,7 +1,7 @@
-import { IProduct } from './types';
+import { ICartItem } from './types';
 
 interface Props {
-  cartItems: IProduct[] | null;
+  cartItems: ICartItem[] | null;
   removeFromCart: (id: number) => () => void;
 }
 
@@ -13,7 +13,7 @@ const Cart = ({ cartItems, removeFromCart }: Props) => {
       {cartItems && <ul className='shopping-cart__list'>
         {cartItems.map(item => (
           <li key={item.id} className='shopping-cart__item'>
-            {item.name} - <span>{item.price}</span>
+            {item.name} - <span>{item.price}</span> : <b>{item.count}</b>
             <button onClick={removeFromCart(item.id)} className='shopping-cart__remove-btn'>
               Remove
             </button>
