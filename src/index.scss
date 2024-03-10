@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Roboto Flex', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+}
+
+.container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 0 25px;
+}
+
+.wrapper {
+  width: 800px;
+  margin: 0 auto;
+  padding-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  column-gap: 200px;
+}
+
+.shop-products,
+.shopping-cart {
+  flex: 1;
+}
+
+.shop-products__list,
+.shopping-cart__list {
+  list-style: none;
+  margin-top: 15px;
+}
+
+.shop-products__item:not(:first-child),
+.shopping-cart__item:not(:first-child) {
+  margin-top: 10px;
+}
+
+.shop-products__add-btn,
+.shopping-cart__remove-btn {
+  float: right;
+  cursor: pointer;
+}

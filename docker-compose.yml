@@ -1,0 +1,14 @@
+version: '3.4'
+services:
+  react:
+    image: node:21-alpine
+    container_name: react-ts-21
+    entrypoint: /bin/sh
+    ports:
+      - '3000:3000'
+    working_dir: /app
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+    tty: true
