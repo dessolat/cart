@@ -3,8 +3,8 @@ import { ICartItem } from '../types';
 
 function useCartLocalStorage(
   key: string
-): [ICartItem[] | null, React.Dispatch<React.SetStateAction<ICartItem[] | null>>] {
-  const [values, setValues] = useState<ICartItem[] | null>(null);
+): [ICartItem[] | null, React.Dispatch<React.SetStateAction<ICartItem[]>>] {
+  const [values, setValues] = useState<ICartItem[]>(null as unknown as ICartItem[]);
 
   useEffect(() => {
     if (!values) return;

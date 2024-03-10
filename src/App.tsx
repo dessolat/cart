@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { getAllProducts, getByIds } from './api';
 import { ICartItem, IProduct } from './types';
 import useCartLocalStorage from './hooks/useLocalStorage';
-import Cart from './Cart';
-import ShopProducts from './ShopProducts';
+import Cart from './components/Cart';
+import ShopProducts from './components/ShopProducts';
 
 function App() {
   const [data, setData] = useState<IProduct[]>([]);
@@ -54,14 +54,33 @@ function App() {
     });
   };
 
-  const removeFromCart = (id: number) => () => {
-    setCartItems(cartItems!.filter(item => item.id !== id));
-  };
+  function reduceCartItemCount(id: number) {
+    return () => {
+			const cartItemCurCount = cartItems!.find(item => item.id === id)?.count as number;
+
+			if (cartItemCurCount < 2) {
+				removeFromCart(id)()
+				return
+			}
+
+      setCartItems(cartItems!.map(item => (item.id === id ? { ...item, count: item.count - 1 } : item)));
+    };
+  }
+
+  function removeFromCart(id: number) {
+    return () => {
+      setCartItems(cartItems!.filter(item => item.id !== id));
+    };
+  }
   return (
     <div className='container'>
       <div className='wrapper'>
         {data && <ShopProducts data={data} addToCart={addToCart} />}
-        <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+        <Cart
+          cartItems={cartItems}
+          reduceCartItemCount={reduceCartItemCount}
+          removeFromCart={removeFromCart}
+        />
       </div>
     </div>
   );

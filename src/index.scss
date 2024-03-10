@@ -19,6 +19,10 @@ body {
   font-weight: 300;
 }
 
+button {
+  padding: 2.5px 5px;
+}
+
 .container {
   max-width: 1350px;
   margin: 0 auto;
@@ -31,12 +35,15 @@ body {
   padding-top: 50px;
   display: flex;
   justify-content: space-evenly;
-  column-gap: 200px;
+  column-gap: 100px;
 }
 
-.shop-products,
+.shop-products {
+  flex: 3;
+}
+
 .shopping-cart {
-  flex: 1;
+  flex: 4;
 }
 
 .shop-products__list,
@@ -45,13 +52,28 @@ body {
   margin-top: 15px;
 }
 
+.shop-products__item,
+.shopping-cart__item {
+  display: flex;
+  align-items: center;
+}
+
 .shop-products__item:not(:first-child),
 .shopping-cart__item:not(:first-child) {
   margin-top: 10px;
 }
 
+.shop-products__add-btn {
+  margin-left: auto;
+}
+
 .shop-products__add-btn,
 .shopping-cart__remove-btn {
-  float: right;
+  cursor: pointer;
+}
+
+.shopping-cart__minus-btn {
+  margin-left: auto;
+  margin-right: 15px;
   cursor: pointer;
 }
